@@ -40,8 +40,7 @@ def BubbleSort(values):
         iterations += 1
     return iterations, swaps
 def GenValues(win_width, win_height):
-  values = np.random.rand(1, win_width)*win_height 
-  return values
+  return np.random.rand(1, win_width)*win_height 
 if __name__ == '__main__':
     for monitor in get_monitors():
         monitor=str(monitor).split(',')
