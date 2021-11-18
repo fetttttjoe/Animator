@@ -4,10 +4,10 @@ import numpy as np
 from screeninfo import get_monitors
 ARRAY_LENGTH = 10000
 def Visualize():
-    win.fill((0,0,0))
-    # Draw lines
+    screen.fill((0,0,0))
+    # Draw lines make sure they fit into display
     for i in range(0,win_width):
-        pygame.draw.line(win, (255, 255, 255), (i, win_height), (i, values[0][i]))
+        pygame.draw.line(screen, (255, 255, 255), (i, win_height), (i, values[0][i]))
     pygame.display.update()
 def InsertionSort(values):
     swaps = 0
@@ -30,7 +30,7 @@ def BubbleSort(values):
     IsSwapped = True
     while(IsSwapped):
         IsSwapped = False
-        
+
         for i in range(len(values[0]) - iterations - 1):
             if (values[0][i] > values[0][i + 1]):
                 values[0][i], values[0][i + 1] = values[0][i + 1], values[0][i] 
@@ -39,6 +39,11 @@ def BubbleSort(values):
         Visualize()
         iterations += 1
     return iterations, swaps
+def DispayText(screen, x, y, text, size):
+    pygame.font.init()
+    font = pygame.font.SysFont('Comic Sans MS', size) #trololo
+    textsurface = font.render(f'{text}', True, 'RED')
+    screen.blit(textsurface, (x, y))
 def GenValues(win_width, win_height):
   return np.random.rand(1, win_width)*win_height 
 if __name__ == '__main__':
@@ -51,26 +56,42 @@ if __name__ == '__main__':
     win_width   = int(int(monitor[0][1])/2) 
     win_height  = int(int(monitor[1][1])/2)
   
-    values = GenValues(win_width, win_height)
 
     # Initialize pygame
     pygame.init()
-    win = pygame.display.set_mode((win_width, win_height))
+    screen = pygame.display.set_mode((win_width, win_height))
     pygame.display.set_caption('Visualize Bubble Sort')
     stop = False
     done = False
-    
+   
     while stop == False:
         pygame.time.delay(100)
     
         if (done == False):
+   
+            
+            values = GenValues(win_width, win_height)
+            DispayText(screen, int(win_width/3), int(win_height/2), "Insertion Sort", 50)
+            pygame.display.update()
+            time.sleep(3)
+            print(f"The Dataset has a size of: {len(values[0])}\n") 
             t0 = time.time()
-            #iterations, swaps = BubbleSort(values)
-            iterations, swaps = InsertionSort(values)
-            t1 = time.time()
+            iterationsI, swapsI = InsertionSort(values)
+            t1 = time.time()  
+            screen.fill((0,0,0))
+            DispayText(screen, int(win_width/3), int(win_height/2), "Bubble Sort", 50)
+            pygame.display.update()
+            time.sleep(3) 
+            values = GenValues(win_width, win_height)
+            screen.fill((0,0,0))
+            t2 = time.time()
+            iterationsB, swapsB = BubbleSort(values)
+            t3 = time.time()
             done = True
-            print(f'\nMade {swaps} swaps in {iterations} iterations\n')
+            print(f'\nInsertionSort made {swapsI} swaps in {iterationsI} iterations\n')
             print(f"The whole Process took {t1-t0} seconds")
+            print(f'BubbleSort made {swapsB} swaps in {iterationsB} iterations\n')
+            print(f"The whole Process took {t3-t2} seconds")
         # Make sure we can close the window with 'X'
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
