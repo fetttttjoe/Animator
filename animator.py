@@ -1,4 +1,4 @@
-#satolen from https://github.com/CoreyMSchafer
+#stolen from https://github.com/CoreyMSchafer
 
 from itertools import count
 import pandas as pd
