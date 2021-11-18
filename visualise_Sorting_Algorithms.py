@@ -2,7 +2,6 @@ import time
 import pygame
 import numpy as np
 from screeninfo import get_monitors
-ARRAY_LENGTH = 10000
 def Visualize():
     screen.fill((0,0,0))
     # Draw lines make sure they fit into display
@@ -39,11 +38,12 @@ def BubbleSort(values):
         Visualize()
         iterations += 1
     return iterations, swaps
-def DispayText(screen, x, y, text, size):
+def DisplayText(screen, x, y, text, size):
     pygame.font.init()
     font = pygame.font.SysFont('Comic Sans MS', size) #trololo
     textsurface = font.render(f'{text}', True, 'RED')
     screen.blit(textsurface, (x, y))
+    pygame.display.update()
 def GenValues(win_width, win_height):
   return np.random.rand(1, win_width)*win_height 
 if __name__ == '__main__':
@@ -51,36 +51,28 @@ if __name__ == '__main__':
         monitor=str(monitor).split(',')
     #make sure we get the correct monitor size
     monitor = monitor[2].split('='), monitor[3].split('=')
-    
     # Set parameters
     win_width   = int(int(monitor[0][1])/2) 
     win_height  = int(int(monitor[1][1])/2)
-  
-
     # Initialize pygame
     pygame.init()
     screen = pygame.display.set_mode((win_width, win_height))
     pygame.display.set_caption('Visualize Bubble Sort')
     stop = False
     done = False
-   
     while stop == False:
         pygame.time.delay(100)
-    
         if (done == False):
-   
-            
             values = GenValues(win_width, win_height)
-            DispayText(screen, int(win_width/3), int(win_height/2), "Insertion Sort", 50)
-            pygame.display.update()
+            DisplayText(screen, int(win_width/3), int(win_height/2), "Insertion Sort", 50)
             time.sleep(3)
             print(f"The Dataset has a size of: {len(values[0])}\n") 
             t0 = time.time()
             iterationsI, swapsI = InsertionSort(values)
             t1 = time.time()  
+            time.sleep(2)
             screen.fill((0,0,0))
-            DispayText(screen, int(win_width/3), int(win_height/2), "Bubble Sort", 50)
-            pygame.display.update()
+            DisplayText(screen, int(win_width/3), int(win_height/2), "Bubble Sort", 50)
             time.sleep(3) 
             values = GenValues(win_width, win_height)
             screen.fill((0,0,0))
@@ -96,6 +88,3 @@ if __name__ == '__main__':
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 stop = True
-
-
-
